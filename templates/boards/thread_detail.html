@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ thread.title }} - /{{ board.slug }}/{% endblock %}
+
+{% block content %}
+    <nav class="breadcrumbs">
+        <a href="{% url 'boards:board_list' %}">Tablice</a> /
+        <a href="{% url 'boards:board_detail' slug=board.slug %}">/{{ board.slug }}/</a> /
+        {{ thread.title }}
+    </nav>
+    <h1>{{ thread.title }}</h1>
+
+    <ul class="post-list">
+        {% for post in posts %}
+            <li id="p{{ post.post_number }}" class="post{% if post.is_op %} post--op{% endif %}">
+                <div class="post__header">
+                    <a class="post__author" href="{{ post.author.get_absolute_url }}">{{ post.author }}</a>
+                    <span class="post__number">#{{ post.post_number }}</span>
+                    <span class="post__date">{{ post.created_at }}</span>
+                </div>
+                {% for attachment in post.attachments.all %}
+                    <div class="post__attachment">
+                        <img src="{{ attachment.thumbnail.url|default:attachment.file.url }}" alt="{{ attachment.original_filename }}">
+                    </div>
+                {% endfor %}
+                <div class="post__content">{{ post.content|linebreaks }}</div>
+            </li>
+        {% empty %}
+            <li>Brak postów.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

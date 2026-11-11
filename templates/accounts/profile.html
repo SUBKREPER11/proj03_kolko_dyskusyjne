@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ profile_user.username }} - Kółko dyskusyjne{% endblock %}
+
+{% block content %}
+    <div class="card profile">
+        {% if profile_user.avatar %}<img class="avatar avatar--large" src="{{ profile_user.avatar.url }}" alt="Avatar {{ profile_user.username }}">{% endif %}
+        <h1>{{ profile_user.username }}</h1>
+        <p class="profile__meta">Dołączył(a): {{ profile_user.created_at|date:"j E Y" }}</p>
+        {% if profile_user.bio %}<p class="profile__bio">{{ profile_user.bio }}</p>{% endif %}
+    </div>
+
+    <h2>Ostatnie posty</h2>
+    <ul class="thread-list">
+        {% for post in recent_posts %}
+            <li class="thread-list__item">
+                <a href="{{ post.get_absolute_url }}">#{{ post.post_number }}</a>
+                w <a href="{{ post.thread.get_absolute_url }}">{{ post.thread.title }}</a>
+                (/{{ post.thread.board.slug }}/)
+                <p class="thread-list__meta">{{ post.content|truncatechars:140 }}</p>
+            </li>
+        {% empty %}
+            <li>Brak postów.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

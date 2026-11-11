@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Ustawienia - Kółko dyskusyjne{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h1>Ustawienia konta</h1>
+        {% if user.avatar %}<img class="avatar avatar--large" src="{{ user.avatar.url }}" alt="Avatar">{% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include "accounts/_form.html" %}
+            <button type="submit" class="button">Zapisz</button>
+        </form>
+        <p><a href="{% url 'accounts:password_change' %}">Zmień hasło</a></p>
+    </div>
+{% endblock %}

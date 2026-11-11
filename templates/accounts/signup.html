@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Rejestracja - Kółko dyskusyjne{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h1>Załóż konto</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% include "accounts/_form.html" %}
+            <button type="submit" class="button">Zarejestruj się</button>
+        </form>
+        <p>Masz już konto? <a href="{% url 'accounts:login' %}">Zaloguj się</a>.</p>
+    </div>
+{% endblock %}

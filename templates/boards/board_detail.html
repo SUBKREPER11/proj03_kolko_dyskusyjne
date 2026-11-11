@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}/{{ board.slug }}/ - {{ board.name }}{% endblock %}
+
+{% block content %}
+    <nav class="breadcrumbs">
+        <a href="{% url 'boards:board_list' %}">Tablice</a> / /{{ board.slug }}/
+    </nav>
+    <h1>/{{ board.slug }}/ - {{ board.name }}</h1>
+    {% if board.description %}<p class="board-description">{{ board.description }}</p>{% endif %}
+
+    <ul class="thread-list">
+        {% for thread in threads %}
+            <li class="thread-list__item{% if thread.pinned %} thread-list__item--pinned{% endif %}">
+                <a class="thread-list__link" href="{% url 'boards:thread_detail' board_slug=board.slug pk=thread.pk %}">{{ thread.title }}</a>
+                {% if thread.pinned %}<span class="badge badge--pinned">Przypięty</span>{% endif %}
+                {% if thread.locked %}<span class="badge badge--locked">Zablokowany</span>{% endif %}
+                <p class="thread-list__meta">Autor: <a href="{{ thread.author.get_absolute_url }}">{{ thread.author }}</a> &middot; Postów: {{ thread.posts.count }} &middot; Ostatnia aktywność: {{ thread.bumped_at }}</p>
+            </li>
+        {% empty %}
+            <li>Brak wątków na tej tablicy.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
